@@ -181,6 +181,7 @@ d3.csv("/data.csv", d3.autoType).then(function(demoData, err) {
     .classed('circleText', true)
     .attr('dy', '0.35em')
     .attr('dx', -6)
+    .attr("fill", "white")
     .text(d => d.abbr);
 
 
