@@ -40,6 +40,16 @@ function xScale(healthData, chosenXAxis) {
 
 }
 
+function yScale(healthData, chosenYAxis) {
+    // create scales
+    var yLinearScale = d3.scaleLinear()
+      .domain([0, d3.max(healthData, d => d[chosenYAxis])])
+      .range([height, 0]);
+  
+    return yLinearScale;
+  
+}
+
 // function used for updating xAxis var upon click on axis label
 function renderXAxes(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
@@ -52,13 +62,13 @@ function renderXAxes(newXScale, xAxis) {
 }
 // function used for updating yAxis var upon click on axis label
 function renderYAxes(newYScale, yAxis) {
-    var leftAxis = d3.axisLeft(newYScale);
+  var leftAxis = d3.axisLeft(newYScale);
   
-    yAxis.transition()
-      .duration(1000)
-      .call(leftAxis);
+  yAxis.transition()
+    .duration(1000)
+    .call(leftAxis);
   
-    return yAxis;
+  return yAxis;
 }
 
 // function used for updating circles group with a transition to
@@ -68,7 +78,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
   circlesGroup.transition()
     .duration(1000)
     .attr('transform', d => `translate(${newXScale(d[chosenXAxis])},${newYScale(d[chosenYAxis])})`);
-
+  
 
   return circlesGroup;
 }
@@ -124,20 +134,20 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
   return circlesGroup;
 }
-function yScale(healthData, chosenYAxis) {
-    // create scales
-    var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(healthData, d => d[chosenYAxis])])
-      .range([height, 0]);
+// function yScale(healthData, chosenYAxis) {
+//     // create scales
+//     var yLinearScale = d3.scaleLinear()
+//       .domain([0, d3.max(healthData, d => d[chosenYAxis])])
+//       .range([height, 0]);
   
-    return yLinearScale;
+//     return yLinearScale;
   
-}
+// }
 /* Load data from data.csv and use d3.autoType to automatically cast all 
 strings to numbers in one shot */
-d3.csv("healthData.csv", d3.autoType).then(function(demoData, err) {
+d3.csv("data.csv").then(function(healthData, err) {
   if (err) throw err;
-    // console.log(demoData);
+  
 
   // Parse data
   healthData.forEach(function(data) {
@@ -321,7 +331,7 @@ d3.csv("healthData.csv", d3.autoType).then(function(demoData, err) {
 
         // functions here found above csv import
         // updates x scale for new data
-        yLinearScale = yScale(demoData, chosenYAxis);
+        yLinearScale = yScale(healthData, chosenYAxis);
 
         // updates y axis with transition
         yAxis = renderYAxes(yLinearScale, yAxis);
